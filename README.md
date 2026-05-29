@@ -41,7 +41,6 @@ The system aims to reduce food waste while ensuring surplus food reaches people 
 ### 💻 Frontend
 
 * HTML, CSS, JavaScript
-* React.js (if used)
 
 ### ⚙️ Backend
 
