@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Food Waste Management</title>
+    <link rel="icon" href="static/images/recycle.png" type="image/png">
+
+    <!-- AOS Scroll Animation CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1f4037, black);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 60px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo svg {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .logo-text span {
+            font-size: 12px;
+            color: #cfd8dc;
+        }
+
+        nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            position: relative;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background: #2ecc71;
+            left: 0;
+            bottom: -5px;
+            transition: 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 140px 20px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 900px;
+            margin: auto;
+            line-height: 1.7;
+            color: #e0f2f1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-buttons {
+            margin-top: 40px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .hero-buttons a {
+            display: inline-block;
+            margin: 10px;
+            padding: 16px 36px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            transition: 0.3s;
+        }
+
+        .hero-buttons a:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .section {
+            padding: 80px 60px;
+        }
+
+        .section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 36px;
+            color: #2ecc71;
+        }
+
+        .section[data-aos][id="impact-counters"] .counter {
+            margin-bottom: 30px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: #2ecc71;
+        }
+
+        .card p {
+            color: #e0f2f1;
+            line-height: 1.6;
+        }
+
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .images-grid img {
+            will-change: transform, box-shadow, opacity;
+            width: 100%;
+            height: 220px;
+            border-radius: 16px;
+            object-fit: cover;
+            transition: 0.4s;
+        }
+
+        .images-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .counters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .counter {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .counter:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .counter h3 {
+            font-size: 36px;
+            color: #2ecc71;
+            margin-bottom: 10px;
+        }
+
+        .counter p {
+            color: #e0f2f1;
+            font-size: 16px;
+        }
+
+        /* Floating CTA */
+        .floating-cta {
+            position: fixed;
+            right: 20px;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .floating-cta a {
+            padding: 14px 22px;
+            border-radius: 30px;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: 0.3s;
+        }
+
+        .floating-cta a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            font-size: 14px;
+            color: #b0bec5;
+            background: rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <!-- SVG LOGO -->
+            <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="256" cy="256" r="200" stroke="#2ecc71" stroke-width="40" />
+                <path d="M256 56v100l80 80" stroke="#2ecc71" stroke-width="40" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            <div class="logo-text">
+                <h1>Zero Food Waste</h1>
+                <span> Eco Friendly Platform</span>
+            </div>
+        </div>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/predict">Predict Wastage</a>
+            <a href="/donor">Donate Food</a>
+            <a href="/receiver">Receive</a>
+            <a href="/volunteer_dashboard">Volunteer</a>
+            <a href="/admin">Admin</a>
+            
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" data-aos="fade-up">
+        <div id="particles-js"></div>
+        <h2>Reducing Food Waste Using Machine Learning</h2>
+        <p>
+            Zero Food Waste predicts and manages food surplus for restaurants, events, and institutions.
+            It connects excess food to communities in need, minimizes financial loss, and reduces environmental impact.
+        </p>
+        <div class="hero-buttons">
+            <a href="/predict">Start Prediction</a>
+            <a href="/donor">Donate Excess Food</a>
+        </div>
+    </section>
+
+    <!-- ABOUT ZERO FOOD WASTE -->
+    <section class="section" data-aos="fade-up">
+        <h2>☘️ What is Zero Food Waste?</h2>
+        <p style="text-align:center; max-width:900px; margin:auto; color:#e0f2f1;">
+            Zero Food Waste is the practice of minimizing food losses from production to consumption. By leveraging AI
+            and smart analytics, our system predicts overproduction and identifies opportunities for donation, ensuring
+            that nutritious food reaches those in need while saving costs and reducing carbon footprint. It also
+            empowers businesses and communities to make data-driven decisions to optimize supply chains and reduce
+            unnecessary waste. Ultimately, this approach promotes sustainability, social responsibility, and a more
+            equitable distribution of resources.
+        </p>
+    </section>
+
+    <!-- MOTIVATION -->
+    <section class="section" data-aos="fade-up">
+        <h2>💡 Motivation & Impact</h2>
+        <div class="cards">
+            <div class="card" data-aos="zoom-in">
+                <h3>Environmental Benefit</h3>
+                <p>Reducing food waste decreases greenhouse gas emissions and conserves natural resources. It helps
+                    preserve water, soil, and energy used in food production. Minimizing waste also reduces landfill
+                    burden. Supports global efforts to combat climate change. Promotes a sustainable future for coming
+                    generations.</p>
+            </div>
+            <div class="card" data-aos="zoom-in" data-aos-delay="100">
+                <h3>Social Benefit</h3>
+                <p>Redirecting surplus food to local communities helps fight hunger and improve societal well-being.
+                    Ensures nutritious meals reach those in need. Strengthens community bonds and social responsibility.
+                    Encourages volunteerism and charitable initiatives. Contributes to a more equitable distribution of
+                    resources.</p>
+            </div>
+            <div class="card" data-aos="zoom-in" data-aos-delay="200">
+                <h3>Financial Benefit</h3>
+                <p>Optimizing food preparation reduces costs for restaurants and events. Minimizes losses from
+                    overproduction and spoilage. Improves budgeting and inventory management. Enhances profitability and
+                    operational efficiency. Supports long-term financial sustainability for businesses.</p>
+            </div>
+            <div class="card" data-aos="zoom-in" data-aos-delay="300">
+                <h3>AI-Driven Efficiency</h3>
+                <p>Machine learning models provide actionable insights for planning and reducing food waste. Predicts
+                    overproduction and consumption patterns accurately. Identifies donation opportunities in real-time.
+                    Helps streamline supply chains and resource allocation. Empowers smarter decisions for businesses
+                    and communities alike.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- IMAGE SHOWCASE -->
+    <section class="section" data-aos="fade-up">
+        <h2>🍲 Zero Waste In Action</h2>
+        <div class="images-grid">
+            <img src="/static/images/food_donation.jpg" alt="Food Donation">
+            <img src="/static/images/donation.jpg" alt="Food Waste Reduction">
+            <img src="/static/images/fruits.jpg" alt="Community Meal">
+            <img src="/static/images/ai_prediction.jpg" alt="AI Prediction in Food">
+        </div>
+    </section>
+
+    <!-- COUNTERS -->
+    <section id="impact-counters" class="section" data-aos="fade-up">
+        <h2>🌍 Our Impact</h2>
+        <div class="counters">
+            <div class="counter" data-target="{{ data.total_food }}">
+                <h3>0</h3>
+                <p>Kg of Food Saved</p>
+                <p>Every bit helps build a greener, healthier planet.</p>
+            </div>
+            <div class="counter" data-target="{{ data.total_donations }}">
+                <h3>0</h3>
+                <p>Meals Donated</p>
+                <p>Sharing food, spreading smiles, strengthening communities.</p>
+            </div>
+            <div class="counter" data-target="{{ data.co2_saved }}">
+                <h3>0</h3>
+                <p>CO₂ Reduced (Kg)</p>
+                <p>Small changes, big impact for our environment.</p>
+            </div>
+            <div class="counter" data-target="{{ data.water_saved }}">
+                <h3>0</h3>
+                <p>Water Saved (L)</p>
+                <p>Every drop counts toward a sustainable future.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Floating CTA Buttons -->
+    <div class="floating-cta">
+        <a href="/predict">Predict Now</a>
+        <a href="/donor">Donate Now</a>
+    </div>
+
+    <footer>
+        © 2026 Zero Food Waste System
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        // Counters
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const number = counter.querySelector('h3');
+            const target = parseFloat(counter.dataset.target);
+            let counted = false;
+
+            const updateCount = () => {
+                if (counted) return;
+                let count = 0;
+                const step = target / 100;
+                const interval = setInterval(() => {
+                    count += step;
+                    if (count >= target) {
+                        number.textContent = target;
+                        clearInterval(interval);
+                    } else {
+                        number.textContent = target >= 1 ? Math.floor(count) : count.toFixed(1);
+                    }
+                }, 20);
+                counted = true;
+            };
+
+            window.addEventListener('scroll', () => {
+                const top = counter.getBoundingClientRect().top;
+                if (top < window.innerHeight) updateCount();
+            });
+        });
+
+        // Particles.js
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 60 },
+                "color": { "value": "#2ecc71" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.3 },
+                "size": { "value": 4 },
+                "line_linked": { "enable": true, "distance": 120, "color": "#2ecc71", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "out_mode": "bounce" }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } }
+            },
+            "retina_detect": true
+        });
+
+    </script>
+</body>
+
+</html>

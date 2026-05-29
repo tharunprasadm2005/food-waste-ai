@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Donate Excess Food</title>
+    <link rel="icon" href="static/images/recycle.png" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1f4037, black);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+            line-height: 1.6;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 60px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo svg {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .logo-text span {
+            font-size: 12px;
+            color: #cfd8dc;
+        }
+
+        nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            position: relative;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background: #2ecc71;
+            left: 0;
+            bottom: -5px;
+            transition: 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Optional: highlight current page link */
+        nav a.active::after {
+            width: 100%;
+        }
+
+        /* GENERAL SECTION STYLE */
+        .section {
+            background: rgba(0, 0, 0, 0.35);
+            padding: 40px 60px;
+            border-radius: 18px;
+            margin: 25px auto;
+            max-width: 97%;
+            line-height: 1.6;
+        }
+
+        .section h2 {
+            color: #2ecc71;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .section h3 {
+            color: #2ecc71;
+            margin-top: 20px;
+        }
+
+        .section ul li {
+            margin-bottom: 8px;
+        }
+
+        .section th,
+        td {
+            text-align: center;
+            vertical-align: middle;
+            height: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* FORM STYLE */
+        form {
+            background: rgba(0, 0, 0, 0.45);
+            padding: 30px;
+            border-radius: 18px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        label {
+            display: block;
+            margin-top: 14px;
+            font-weight: 600;
+            color: #c8f7dc;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #2ecc71;
+            background: rgba(46, 204, 113, 0.12);
+            box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.25);
+        }
+
+        button {
+            margin-top: 20px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+        }
+
+        /* NGO SECTION – MATCH MAIN CONTENT WIDTH */
+        .ngo-section {
+            background: rgba(0, 0, 0, 0.35);
+            padding: 35px 45px;
+            border-radius: 18px;
+            margin: 25px auto;
+            max-width: 97%;
+        }
+
+        /* GRID */
+        .ngo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 18px;
+        }
+
+        /* CARD – SAME SIZE FOR BOTH SECTIONS */
+        .ngo-card {
+            background: linear-gradient(145deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.25));
+            padding: 22px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            min-height: 240px;
+        }
+
+        .ngo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .ngo-card button {
+            margin-top: 14px;
+            padding: 10px 18px;
+            font-size: 14px;
+        }
+
+        /* Remove background & box from NGO card form */
+        .ngo-card form {
+            background: transparent !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            max-width: none !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Style NGO Notify button cleanly */
+        .ngo-card button {
+            background: linear-gradient(90deg, #2ecc71, #27ae60) !important;
+            border: none !important;
+            width: auto !important;
+            padding: 10px 20px !important;
+            border-radius: 25px !important;
+            margin: 12px auto 0 !important;
+            display: block;
+        }
+
+        /* REAL-TIME METRICS CARDS */
+        .metrics {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .metric-card {
+            flex: 1 1 30%;
+            margin: 10px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.07);
+            padding: 18px;
+            border-radius: 14px;
+            transition: 0.3s;
+        }
+
+        .metric-card h4 {
+            color: #2ecc71;
+            margin-bottom: 10px;
+        }
+
+        .metric-card p {
+            font-size: 14px;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Back button */
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin: 25px auto;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            color: #2ecc71;
+            border: 2px solid #2ecc71;
+            max-width: 200px;
+        }
+
+        .back-btn:hover {
+            background: #2ecc71;
+            color: #0f2027;
+            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 1000px) {
+
+            .section,
+            form,
+            .ngo-section {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .metrics {
+                flex-direction: column;
+            }
+
+            .metric-card {
+                margin: 10px 0;
+            }
+        }
+
+        /* Remove the background box and border from the table action buttons */
+        .section table button {
+            background: #2ecc71 !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            width: auto !important;
+            margin: 0 auto !important;
+        }
+
+        /* Ensure the form inside the table cell doesn't add extra padding/background */
+        .section table td form {
+            background: transparent !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            max-width: none !important;
+        }
+
+        /* Closed select box */
+        select {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Open dropdown list */
+        select option {
+            color: black;
+            background-color: white;
+        }
+
+        /* COMMUNITY WALL STYLING */
+        .community-wall {
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .hero-card {
+            flex: 1 1 30%;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .packaging-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .pack-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .pack-row:last-child {
+            border-bottom: none;
+        }
+
+        .pack-icon {
+            font-size: 22px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .pack-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pack-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #38d39f;
+            margin-bottom: 5px;
+        }
+
+        .pack-value {
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .priority-box {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff4d4d;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* ================= PREMIUM GLASS CHATBOT ================= */
+
+        /* Floating Button */
+        #chatbot-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 68px;
+            height: 68px;
+            background: linear-gradient(135deg, #00c9a7, #008f7a);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(0, 201, 167, 0.4);
+
+            transition: all 0.4s ease;
+            z-index: 9999;
+        }
+
+        #chatbot-toggle:hover {
+            transform: scale(1.12) rotate(6deg);
+        }
+
+
+        /* Chatbox */
+        #chatbot-box {
+            position: fixed;
+            bottom: 105px;
+            right: 25px;
+            width: 360px;
+            height: 470px;
+
+            background: rgba(15, 32, 39, 0.55);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                inset 0 0 40px rgba(255, 255, 255, 0.03);
+
+            z-index: 9999;
+            animation: popup 0.4s ease;
+        }
+
+
+        /* Header */
+        .chat-header {
+            background: linear-gradient(135deg, #00c9a7, #008f7a);
+            padding: 16px;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+
+        /* Close button */
+        .close-btn {
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+
+
+        /* Messages Area */
+        #chat-messages {
+            flex: 1;
+            padding: 18px;
+            overflow-y: auto;
+            font-size: 14px;
+            color: #e8f6f3;
+        }
+
+        #chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+
+        /* User message bubble */
+        .user-msg {
+            background: linear-gradient(135deg, rgba(0, 201, 167, 0.25), rgba(0, 143, 122, 0.25));
+            padding: 10px 14px;
+            border-radius: 18px 18px 4px 18px;
+            margin: 8px 0;
+            text-align: right;
+            color: #00f5d4;
+
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 201, 167, 0.3);
+        }
+
+
+        /* Bot message bubble */
+        .bot-msg {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 10px 14px;
+            border-radius: 18px 18px 18px 4px;
+            margin: 8px 0;
+            text-align: left;
+            color: white;
+
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+
+        /* Input Area */
+        .chat-input {
+            display: flex;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+
+        /* Input Field */
+        .chat-input input {
+            flex: 1;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-input input:focus {
+            border: 1px solid rgba(0, 201, 167, 0.5);
+            box-shadow: 0 0 10px rgba(0, 201, 167, 0.4);
+        }
+
+
+        /* Send Button */
+        .chat-input button {
+            margin-left: 10px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #00c9a7, #008f7a);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .chat-input button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 201, 167, 0.6);
+        }
+
+
+        /* Popup Animation */
+        @keyframes popup {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <!-- SVG LOGO -->
+            <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="256" cy="256" r="200" stroke="#2ecc71" stroke-width="40" />
+                <path d="M256 56v100l80 80" stroke="#2ecc71" stroke-width="40" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            <div class="logo-text">
+                <h1>Zero Food Waste</h1>
+                <span> Donor Module</span>
+            </div>
+        </div>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/predict">Predict Wastage</a>
+            <a href="/donor" class="active">Donate Food</a>
+            <a href="/receiver">Receive</a>
+            <a href="/volunteer_dashboard">Volunteer</a>
+            <a href="/admin">Admin</a>
+        </nav>
+    </header>
+
+    <!-- SECTION 1: Donation Info + Metrics -->
+    <div class="section" data-aos="fade-up">
+        <h2>Donation Information & Metrics</h2>
+        <p>Millions face hunger while excess food is wasted daily. Your contribution helps reduce waste, hunger, and
+            environmental impact.Beyond the immediate social benefit, your donation plays a vital role in global
+            sustainability. Currently, food waste is responsible for approximately 8% of global greenhouse gas
+            emissions; if it were a country, it would be the third-largest emitter in the world. By redirecting surplus
+            meals, you are actively preventing the decay of organic matter in landfills, which releases potent methane
+            gas, and ensuring that the water and energy used in production do not go to waste.</p>
+
+        <div class="metrics">
+            <div class="metric-card">
+                <h4>AI-Driven Priority</h4>
+                <p>Donations with higher predicted waste urgency are prioritized for pickup and distribution.</p>
+            </div>
+            <div class="metric-card">
+                <h4>Environmental Impact</h4>
+                <p>🌍 Reduced CO₂ emissions | 🍽 Meals saved</p>
+            </div>
+            <div class="metric-card">
+                <h4>Food Safety Guidelines</h4>
+                <p>Donate food within safe consumption hours and ensure clean storage.</p>
+            </div>
+            <div class="metric-card">
+                <h4>Delivery Options</h4>
+                <p>Choose NGO pickup or schedule your own delivery.</p>
+            </div>
+            <div class="metric-card">
+                <h4>Donation Tracking</h4>
+                <p>Track your donation in real-time via our system.</p>
+            </div>
+            <div class="metric-card">
+                <h4>Donation History</h4>
+                <p>View all your past donations and their impact.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: Donation Form -->
+    <form method="POST" action="/donor" enctype="multipart/form-data" data-aos="fade-up">
+        <h2>Donate Excess Food</h2>
+
+        <label>Food Item</label>
+        <input type="text" name="food" value="{{ data.food if data }}" required>
+
+        <label>Quantity</label>
+        <input type="number" name="quantity" value="{{ data.quantity if data }}" required>
+
+        <label>District</label>
+        <select name="district" required>
+            <option value="">Select</option>
+            {% for d in [
+            "Ariyalur","Chengalpattu","Chennai","Coimbatore","Cuddalore",
+            "Dharmapuri","Dindigul","Erode","Kallakurichi","Kanchipuram",
+            "Karur","Krishnagiri","Madurai","Mayiladuthurai","Nagapattinam",
+            "Namakkal","Nilgiris","Perambalur","Pudukkottai","Ramanathapuram",
+            "Ranipet","Salem","Sivaganga","Tenkasi","Thanjavur",
+            "Theni","Thoothukudi","Tiruchirappalli","Tirunelveli","Tirupattur",
+            "Tiruppur","Tiruvallur","Tiruvannamalai","Tiruvarur",
+            "Vellore","Viluppuram","Virudhunagar"
+            ] %}
+            <option value="{{ d }}" {% if data and data.district==d %}selected{% endif %}>{{ d }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Donor Name</label>
+        <input type="text" name="donor_name" value="{{ data.donor_name if data }}" required>
+
+        <label>Contact</label>
+        <input type="tel" name="contact" value="{{ data.contact if data }}" required>
+
+        <label>Upload Food Image (Optional)</label>
+        <input type="file" name="food_image" accept="image/*">
+
+        <button type="submit">Submit Donation</button>
+    </form>
+
+    <!-- SECTION 3: Nearby NGOs -->
+    {% if ngos_grouped %}
+
+    <!-- SECTION 4: Donor Dashboard & Impact -->
+    <div class="section" data-aos="fade-up">
+        <h2>🏆 Donor Dashboard & Impact</h2>
+
+        <div class="metrics">
+            <div class="metric-card">
+                <h4>Total Donations</h4>
+                <p>🍽️ {{ dashboard.total_donations }} Donations</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Meals Served</h4>
+                <p>👨‍👩‍👧‍👦 {{ dashboard.meals_served }} Meals</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Reward Points</h4>
+                <p>⭐ {{ dashboard.points }} Points</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Next Level</h4>
+                <p>📈 {{ dashboard.next_level }}</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Trust Score</h4>
+                <p>🤝 {{ dashboard.trust_score }}%</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Remaining</h4>
+                <p>⏳ {{ dashboard.remaining }} meals</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Mission</h4>
+                <p> {{ dashboard.message }}</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>AI Food Quality</h4>
+                <p>🧠 {{ quality if quality else "Not Provided" }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ngo-section" data-aos="fade-up">
+        <h2>Nearby NGOs</h2>
+
+        <!-- SAME DISTRICT -->
+        {% if selected_district %}
+        <br>
+        <h3>NGOs in {{ selected_district }}</h3>
+        <div class="ngo-grid">
+            {% for ngo in prioritized_ngos if ngo.priority == 1 %}
+            <div class="ngo-card">
+                <div>
+                    <p>Priority: <span style="color:#2ecc71;">High (Same District)</span></p>
+                    <b>{{ ngo.name }}</b><br>
+                    {{ ngo.address }}<br>
+                    📞 {{ ngo.contact }}
+                </div>
+                <form action="/notify" method="POST">
+                    <input type="hidden" name="ngo_name" value="{{ ngo.name }}">
+                    <input type="hidden" name="ngo_contact" value="{{ ngo.contact }}">
+                    <input type="hidden" name="donor_contact" value="{{ data.contact }}">
+                    <input type="hidden" name="donor_name" value="{{ data.donor_name }}">
+                    <input type="hidden" name="food" value="{{ data.food }}">
+                    <input type="hidden" name="quantity" value="{{ data.quantity }}">
+                    <button type="submit">📩 Notify NGO</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- NEARBY DISTRICT -->
+        {% if prioritized_ngos %}
+        <br>
+        <h3>NGOs in Nearby Districts</h3>
+        <div class="ngo-grid">
+            {% for ngo in prioritized_ngos if ngo.priority != 1 %}
+            <div class="ngo-card">
+                <div>
+                    <p>Priority: <span style="color:orange;">Medium (Nearby District)</span></p>
+                    <b>{{ ngo.name }}</b><br>
+                    {{ ngo.address }}<br>
+                    📞 {{ ngo.contact }}
+                </div>
+                <form action="/notify" method="POST">
+                    <input type="hidden" name="ngo_name" value="{{ ngo.name }}">
+                    <input type="hidden" name="ngo_contact" value="{{ ngo.contact }}">
+                    <input type="hidden" name="donor_contact" value="{{ data.contact }}">
+                    <input type="hidden" name="donor_name" value="{{ data.donor_name }}">
+                    <input type="hidden" name="food" value="{{ data.food }}">
+                    <input type="hidden" name="quantity" value="{{ data.quantity }}">
+                    <button type="submit">📩 Notify NGO</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+
+    <!-- SECTION 5: NGO & Donor Location Map -->
+    <div class="section" data-aos="fade-up">
+        <h2>🗺️ Nearby NGOs & Pickup Map</h2>
+        <iframe
+            src="https://www.google.com/maps?q=ngo+OR+charity+OR+orphanage+OR+food+bank+OR+trust+in+{{ map_data.donor_district }},+Tamil+Nadu,+India&output=embed"
+            width="100%" height="350" style="border-radius:15px;border:0;">
+        </iframe>
+    </div>
+
+    <!-- SECTION 6: ALL NGOS TABLE -->
+    <div class="section" data-aos="fade-up">
+        <h2>All NGOs in Tamil Nadu</h2>
+        <table border="1" cellpadding="8" cellspacing="10" style="width:100%; color:white; border-collapse:collapse;">
+            <thead>
+                <tr style="background:rgba(46,204,113,0.2);">
+                    <th>District</th>
+                    <th>NGO Name</th>
+                    <th>Address</th>
+                    <th>Contact</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ngo in all_ngos %}
+                <tr style="background:rgba(255,255,255,0.05);">
+                    <td>{{ ngo.district }}</td>
+                    <td>{{ ngo.name }}</td>
+                    <td>{{ ngo.address }}</td>
+                    <td>{{ ngo.contact }}</td>
+                    <td>
+                        <form action="/notify" method="POST">
+                            <input type="hidden" name="ngo_name" value="{{ ngo.name }}">
+                            <input type="hidden" name="ngo_contact" value="{{ ngo.contact }}">
+                            <input type="hidden" name="donor_contact" value="{{ data.contact }}">
+                            <input type="hidden" name="donor_name" value="{{ data.donor_name }}">
+                            <input type="hidden" name="food" value="{{ data.food }}">
+                            <input type="hidden" name="quantity" value="{{ data.quantity }}">
+                            <input type="hidden" name="location" value="{{ ngo.district }}">
+                            <button type="submit">
+                                📩 Notify
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- SECTION 7: Food Expiry Alerts -->
+    <div class="section" data-aos="fade-up">
+        <h2>⏰ Food Expiry & Safety Alerts</h2>
+
+        <div class="metrics">
+            <div class="metric-card">
+                <h4>Status</h4>
+                <p>{{ expiry.status }}</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Urgency</h4>
+                <p>{{ expiry.message }}</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Pickup ETA</h4>
+                <p>🚚 {{ pickup_eta }}</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>🚚 Smart Pickup</h4>
+                <p>{{ pickup_time }}</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Urgency Score</h4>
+                <p>⚡ {{ urgency_score }}</p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Donor Level</h4>
+                <p>🏅 {{ level }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" data-aos="fade-up">
+        <h2>📦 Smart Packaging Advice</h2>
+
+        {% if packaging_advice %}
+        <div class="packaging-card">
+
+            <!-- Row 1 -->
+            <div class="pack-row">
+                <div class="pack-icon">📦</div>
+                <div class="pack-content">
+                    <span class="pack-label">Packaging Type</span>
+                    <span class="pack-value">{{ packaging_advice.type }}</span>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="pack-row">
+                <div class="pack-icon">🌡️</div>
+                <div class="pack-content">
+                    <span class="pack-label">Temperature Control</span>
+                    <span class="pack-value">{{ packaging_advice.temperature }}</span>
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="pack-row">
+                <div class="pack-icon">🤝</div>
+                <div class="pack-content">
+                    <span class="pack-label">Handling Instructions</span>
+                    <span class="pack-value">{{ packaging_advice.extra }}</span>
+                </div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="pack-row">
+                <div class="pack-icon">🛡️</div>
+                <div class="pack-content">
+                    <span class="pack-label">Safety Level</span>
+                    <span class="pack-value">{{ packaging_advice.safety }}</span>
+                </div>
+            </div>
+
+            {% if packaging_advice.bulk_advice %}
+            <div class="pack-row">
+                <div class="pack-icon">📦</div>
+                <div class="pack-content">
+                    <span class="pack-label">Bulk Handling</span>
+                    <span class="pack-value">{{ packaging_advice.bulk_advice }}</span>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Row 7: Eco-friendly Tip (Optional) -->
+            {% if packaging_advice.eco_tip %}
+            <div class="pack-row eco-row">
+                <div class="pack-icon">🌱</div>
+                <div class="pack-content">
+                    <span class="pack-label">Eco-friendly Tip</span>
+                    <span class="pack-value">{{ packaging_advice.eco_tip }}</span>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if packaging_advice.priority %}
+            <div class="priority-box">
+                {{ packaging_advice.priority }}
+            </div>
+            {% endif %}
+
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ================= COMMUNITY WALL ================= -->
+    <div class="section" data-aos="fade-up">
+        <h2>❤️ Thank You Heroes</h2>
+
+        <div class="metrics community-wall">
+
+            {% if top_donors %}
+            {% for donor in top_donors %}
+            <div class="metric-card hero-card">
+                <h4>🌟 {{ donor.name }}</h4>
+                <p>{{ donor.meals }} Meals Donated</p>
+                <p>💚 Community Hero</p>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="metric-card">
+                <p>No donors yet. Be the first hero! 💚</p>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <!-- FLOATING CHATBOT BUTTON -->
+    <div id="chatbot-toggle" onclick="toggleChatbot()">
+        🤖
+    </div>
+
+    <!-- CHATBOT POPUP -->
+    <div id="chatbot-box">
+        <div class="chat-header">
+            🤖 AI Assistant
+            <span onclick="toggleChatbot()" class="close-btn">✖</span>
+        </div>
+
+        <div id="chat-messages"></div>
+
+        <div class="chat-input">
+            <input type="text" id="userMessage" placeholder="Ask something...">
+            <button onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- SECTION 8: Back to Home -->
+    <a href="/" class="back-btn" data-aos="fade-up">Back to Home</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>AOS.init({ duration: 1000, once: true });</script>
+
+
+    <script>
+        function toggleChatbot() {
+            let box = document.getElementById("chatbot-box");
+            let messages = document.getElementById("chat-messages");
+
+            if (box.style.display === "flex") {
+                box.style.display = "none";
+            } else {
+                box.style.display = "flex";
+
+                if (messages.innerHTML.trim() === "") {
+                    messages.innerHTML += `<div class="bot-msg">👋 Hello! I'm your AI Assistant. Ask me about your donation, points, or pickup status.</div>`;
+                }
+            }
+        }
+
+        function sendMessage() {
+            let input = document.getElementById("userMessage");
+            let msg = input.value.trim();
+            if (msg === "") return;
+
+            let messages = document.getElementById("chat-messages");
+
+            // Show user message
+            messages.innerHTML += `<div class="user-msg">${msg}</div>`;
+            input.value = "";
+
+            fetch("/chatbot", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "message=" + msg + "&donor_name={{ data.donor_name if data else '' }}"
+            })
+                .then(res => res.json())
+                .then(data => {
+                    messages.innerHTML += `<div class="bot-msg">${data.reply}</div>`;
+                    messages.scrollTop = messages.scrollHeight;
+                });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+# Environment
+.env
+
+# Database
+*.db
+*.sqlite3
+
+# Uploads
+static/uploads/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+
+# VS Code
+.vscode/
+
+# CatBoost logs
+catboost_info/
+
+# System files
+.DS_Store

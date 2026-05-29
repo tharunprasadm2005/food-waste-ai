@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Volunteer Dashboard</title>
+    <link rel="icon" href="static/images/recycle.png" type="image/png">
+
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1f4037, black);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 60px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo svg {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .logo-text span {
+            font-size: 12px;
+            color: #cfd8dc;
+        }
+
+        nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            position: relative;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background: #2ecc71;
+            left: 0;
+            bottom: -5px;
+            transition: 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Highlight current page */
+        nav a.active::after {
+            width: 100%;
+        }
+
+        /* HERO */
+
+        .hero {
+            text-align: center;
+            padding: 130px 20px 80px;
+            position: relative;
+        }
+
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero h2 {
+            font-size: 46px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 850px;
+            margin: auto;
+            color: #e0f2f1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-btn {
+            margin-top: 35px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-btn a {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 30px;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .hero-btn a:hover {
+            transform: scale(1.05);
+        }
+
+        /* SECTIONS */
+
+        .section {
+            padding: 80px 60px;
+        }
+
+        .section h2 {
+            text-align: center;
+            color: #2ecc71;
+            font-size: 34px;
+            margin-bottom: 40px;
+        }
+
+        /* CARDS */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h3 {
+            color: #2ecc71;
+            margin-bottom: 12px;
+        }
+
+        /* COUNTERS */
+
+        .counters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+
+        .counter {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        /* Hover effect for impact cards */
+
+        .counter:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .counter h3 {
+            color: #2ecc71;
+            margin-bottom: 12px;
+        }
+
+        /* ===============================
+   TASK CARDS
+================================ */
+
+        .task-card {
+            background: linear-gradient(145deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.35));
+            padding: 28px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            margin-bottom: 28px;
+            transition: all 0.35s ease;
+        }
+
+        .task-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+        }
+
+        /* ===============================
+   TASK HEADER
+================================ */
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .task-header h3 {
+            background: #2ecc71;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            color: white;
+        }
+
+        .assigned-volunteer {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* ===============================
+   TASK GRID
+================================ */
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        /* ===============================
+   TASK SECTIONS
+================================ */
+
+        .task-group {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 16px;
+            border-radius: 10px;
+        }
+
+        .task-group h4 {
+            color: #2ecc71;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .task-group p {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        /* ===============================
+   ROUTE DISPLAY
+================================ */
+
+        .route-line {
+            margin-top: 18px;
+            text-align: center;
+            font-weight: bold;
+            color: #2ecc71;
+            font-size: 15px;
+        }
+
+        /* ===============================
+   ACTION BUTTONS
+================================ */
+
+        .task-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-accept,
+        .btn-decline,
+        .btn-deliver {
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-accept {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-accept:hover {
+            background: #2ecc71;
+        }
+
+        .btn-decline {
+            background: #c0392b;
+            color: white;
+        }
+
+        .btn-decline:hover {
+            background: #e74c3c;
+        }
+
+        .btn-deliver {
+            background: #2980b9;
+            color: white;
+        }
+
+        .btn-deliver:hover {
+            background: #3498db;
+        }
+
+        /* ===============================
+   STATUS BADGES
+================================ */
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+            display: inline-block;
+        }
+
+        .status-assigned {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-accepted {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-completed {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            font-size: 14px;
+            color: #b0bec5;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Back button */
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin: 25px auto;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            color: #2ecc71;
+            border: 2px solid #2ecc71;
+            max-width: 200px;
+        }
+
+        .back-btn:hover {
+            background: #2ecc71;
+            color: #0f2027;
+            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+            transform: translateY(-2px);
+        }
+
+        nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            position: relative;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background: #2ecc71;
+            left: 0;
+            bottom: -5px;
+            transition: 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .impact-subtitle {
+            text-align: center;
+            font-size: 18px;
+            max-width: 750px;
+            margin: 0 auto 30px auto;
+            line-height: 1.6;
+        }
+
+        .volunteer-form-card {
+            width: 90%;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .volunteer-form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .volunteer-form-card label {
+            display: block;
+            margin: 12px 0 6px;
+            font-weight: 600;
+            color: #2ecc71;
+        }
+
+        .volunteer-form-card input,
+        .volunteer-form-card select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        /* .volunteer-form-card input:focus,
+        .volunteer-form-card select:focus {
+            box-shadow: 0 0 8px #2ecc71;
+            background: rgba(255, 255, 255, 0.1);
+        } */
+
+        .volunteer-form-card button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .volunteer-form-card button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            color: white;
+        }
+
+        table th {
+            background: rgba(46, 204, 113, 0.25);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <!-- SVG LOGO -->
+            <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="256" cy="256" r="200" stroke="#2ecc71" stroke-width="40" />
+                <path d="M256 56v100l80 80" stroke="#2ecc71" stroke-width="40" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            <div class="logo-text">
+                <h1>Zero Food Waste</h1>
+                <span> Volunteer Dashboard</span>
+            </div>
+        </div>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/predict">Predict Wastage</a>
+            <a href="/donor">Donate Food</a>
+            <a href="/receiver">Receive</a>
+            <a href="/volunteer_dashboard" class="active">Volunteer</a>
+            <a href="/admin">Admin</a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+
+    <section class="hero" data-aos="fade-up">
+
+        <div id="particles-js"></div>
+
+        <h2>Become a Food Rescue Hero</h2>
+
+        <p>
+            Join a community of changemakers dedicated to reducing food waste and fighting hunger.
+            Every pickup you complete transforms surplus food into hope, delivering meals to those in need.
+            Your efforts strengthen communities, protect the environment, and create a lasting positive impact.
+        </p>
+
+        <div class="hero-btn">
+            <a href="#tasks">View My Tasks</a>
+        </div>
+
+    </section>
+
+    <section class="section" data-aos="fade-up">
+
+        <h2>🤝 Volunteer Registration</h2>
+
+        <p class="impact-subtitle">
+            Join our food rescue network and help deliver surplus food to people in need.
+            Register as a volunteer to start receiving pickup tasks.
+        </p>
+
+        <div class="cards">
+
+            <div class="card volunteer-form-card">
+
+                <form action="/register_volunteer" method="POST">
+
+                    <label>Full Name</label>
+                    <input type="text" name="name" placeholder="Enter your full name" required>
+
+                    <label>District</label>
+                    <select name="district" required>
+                        <option value="" disabled selected>Select your district</option>
+                        {% for d in [
+                        "Ariyalur","Chengalpattu","Chennai","Coimbatore","Cuddalore",
+                        "Dharmapuri","Dindigul","Erode","Kallakurichi","Kanchipuram",
+                        "Karur","Krishnagiri","Madurai","Mayiladuthurai","Nagapattinam",
+                        "Namakkal","Nilgiris","Perambalur","Pudukkottai","Ramanathapuram",
+                        "Ranipet","Salem","Sivaganga","Tenkasi","Thanjavur",
+                        "Theni","Thoothukudi","Tiruchirappalli","Tirunelveli","Tirupattur",
+                        "Tiruppur","Tiruvallur","Tiruvannamalai","Tiruvarur",
+                        "Vellore","Viluppuram","Virudhunagar"
+                        ] %}
+                        <option value="{{ d }}">{{ d }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label>Phone Number</label>
+                    <input type="tel" name="phone" placeholder="e.g., 9876543210" pattern="[0-9]{10}" required>
+
+                    <label>Vehicle Type</label>
+                    <select name="vehicle" required>
+                        <option value="" disabled selected>Select your vehicle</option>
+                        <option>Bike</option>
+                        <option>Car</option>
+                        <option>Van</option>
+                    </select>
+
+                    <button type="submit">Register as Volunteer</button>
+
+                </form>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- MOTIVATION -->
+
+    <section class="section" data-aos="fade-up">
+
+        <h2>💡 Why Volunteers Matter</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>🍲 Fight Hunger</h3>
+                <p>Volunteers play a vital role in ensuring surplus food reaches families, orphanages, and communities
+                    facing food insecurity.</p>
+            </div>
+
+            <div class="card">
+                <h3>🌍 Protect the Environment</h3>
+                <p>By rescuing excess food, volunteers help reduce food waste and lower methane emissions that harm our
+                    planet.</p>
+            </div>
+
+            <div class="card">
+                <h3>🚚 Food Rescue Network</h3>
+                <p>Volunteers form the essential bridge between donors and NGOs, enabling efficient and timely food
+                    redistribution.</p>
+            </div>
+
+            <div class="card">
+                <h3>🏆 Community Impact</h3>
+                <p>Every pickup you complete contributes to building a stronger, more compassionate community.</p>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="section">
+
+        <h2>⚠ Volunteer Safety & Food Handling Guidelines</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <p>
+                    <strong>Check Food Quality:</strong> Carefully verify the freshness and condition of the food before
+                    pickup to ensure it is safe for consumption.
+                </p>
+            </div>
+
+            <div class="card">
+                <p>
+                    <strong>Maintain Safe Transport:</strong> Handle and transport food responsibly to prevent
+                    contamination and preserve its quality during delivery.
+                </p>
+            </div>
+
+            <div class="card">
+                <p>
+                    <strong>Report Delays Promptly:</strong> If any delays or issues occur during pickup or delivery,
+                    inform the receiving NGO immediately for proper coordination.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- COUNTERS -->
+
+    <section class="section" data-aos="fade-up">
+
+        <h2>🌍 Volunteer Impact Dashboard</h2>
+
+        <p class="impact-subtitle">
+            Together, our volunteers are transforming surplus food into hope.
+            Every pickup you complete contributes to feeding families, reducing food waste,
+            and building stronger communities.
+        </p>
+
+        <div class="counters">
+
+            <div class="counter">
+                <h3>{{ meals_delivered }}</h3>
+                <p>Meals Delivered to People in Need</p>
+            </div>
+
+            <div class="counter">
+                <h3>{{ completed_pickups }}</h3>
+                <p>Successful Food Pickups Completed</p>
+            </div>
+
+            <div class="counter">
+                <h3>{{ total_food }} kg</h3>
+                <p>Total Food Rescued from Waste</p>
+            </div>
+
+            <div class="counter">
+                <h3>{{ families_helped }}</h3>
+                <p>Families Supported Through Donations</p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- VOLUNTEER LEVELS -->
+
+    <section class="section" data-aos="fade-up">
+
+        <h2>🏅 Volunteer Achievement Levels</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>🥉 Bronze Volunteer</h3>
+                <p>Complete <strong>5 successful food deliveries</strong> and begin your journey as a food rescue
+                    volunteer.</p>
+            </div>
+
+            <div class="card">
+                <h3>🥈 Silver Volunteer</h3>
+                <p>Reach <strong>20 completed deliveries</strong> and make a meaningful contribution to the community.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>🥇 Gold Volunteer</h3>
+                <p>Achieve <strong>50 successful deliveries</strong> and become a highly trusted food rescue champion.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>💎 Platinum Volunteer</h3>
+                <p>Complete <strong>100 deliveries</strong> and earn recognition as a top community food rescue hero.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="section">
+
+        <h2>🏆 Volunteer Rewards</h2>
+
+        <div class="cards">
+
+            {% for v in volunteers %}
+
+            <div class="card">
+
+                <h3><b>👤 {{ v.name }}</b></h3>
+
+                <p><b>🎖 Level:</b> {{ v.level }}</p>
+
+                <p><b>⭐ Reward Points:</b> {{ v.points }}</p>
+
+                <p><b>📦 Deliveries:</b> {{ v.deliveries }}</p>
+
+                <p><b>🎓 Certificate Eligibility:</b>
+                    {% if v.deliveries >= 20 %}
+                    <span style="color:green;">Eligible</span>
+                    {% else %}
+                    Complete {{ 20 - v.deliveries }} more deliveries
+                    {% endif %}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    <!-- TASK SECTION -->
+
+    <section id="tasks" class="section" data-aos="fade-up">
+
+        <h2>🚚 Active Pickup Tasks</h2>
+
+        {% if active_tasks %}
+
+        {% for t in active_tasks %}
+
+        <div class="task-card">
+
+            <!-- HEADER -->
+            <div class="task-header">
+                <span class="assigned-volunteer">
+                    👤 {{ t.volunteer_name | upper }}
+                </span>
+
+                <h3>📦 Pickup #{{ t.id }}</h3>
+            </div>
+
+            <!-- TASK GRID -->
+            <div class="task-grid">
+
+                <!-- FOOD DETAILS -->
+                <div class="task-group">
+                    <h4>🍽 Food Details</h4>
+                    <p><b>Type:</b> {{ t.food }}</p>
+                    <p><b>Quantity:</b> {{ t.quantity }} kg</p>
+                    <p><b>Meals:</b> {{ t.meals }}</p>
+                </div>
+
+                <!-- DONOR -->
+                <div class="task-group">
+                    <h4>🏢 Donor</h4>
+                    <p><b>Name:</b> {{ t.donor_name }}</p>
+                    <p><b>Contact:</b> {{ t.contact }}</p>
+                    <p><b>Location:</b> {{ t.district }}</p>
+                </div>
+
+                <!-- RECEIVER -->
+                <div class="task-group">
+                    <h4>🏠 Receiver NGO</h4>
+                    <p><b>Name:</b> {{ t.ngo_name if t.ngo_name else "NGO Assigned" }}</p>
+                    <p><b>Contact:</b> {{ t.ngo_contact if t.ngo_contact else "Not Provided" }}</p>
+                </div>
+
+            </div>
+
+            <!-- ROUTE -->
+            <div class="route-line">
+                {{ t.district }} ➜ {{ t.ngo_name }}
+            </div>
+
+            <a target="_blank" href="https://www.google.com/maps/search/?api=1&query={{t.ngo_name}} {{t.district}}">
+                <button class="btn-deliver">🗺 Open Route in Maps</button>
+            </a>
+
+            <!-- STATUS + ACTIONS -->
+
+            <div class="task-actions">
+
+                {% if t.pickup_status == "Assigned" %}
+
+                <span class="status-badge status-assigned">Waiting for Response</span>
+
+                <a href="/accept_pickup/{{ t.id }}">
+                    <button class="btn-accept">Accept</button>
+                </a>
+
+                <a href="/decline_pickup/{{ t.id }}">
+                    <button class="btn-decline">Decline</button>
+                </a>
+
+                {% elif t.pickup_status == "Accepted" %}
+
+                <span class="status-badge status-accepted">Pickup In Progress</span>
+
+                <a href="/complete_pickup/{{ t.id }}">
+                    <button class="btn-deliver">Mark Delivered</button>
+                </a>
+
+                {% elif t.pickup_status == "Completed" %}
+
+                <span class="status-badge status-completed">Delivery Completed</span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        {% else %}
+
+        <div style="text-align:center;padding:40px;color:gray;">
+            <h3>No Pickup Tasks</h3>
+            <p>No deliveries assigned right now.</p>
+        </div>
+
+        {% endif %}
+
+    </section>
+
+    <section class="section">
+
+        <h2>📜 Past Deliveries</h2>
+
+        {% if past_tasks %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Pickup ID</th>
+                    <th>Volunteer</th>
+                    <th>Food</th>
+                    <th>Quantity</th>
+                    <th>Meals</th>
+                    <th>Donor</th>
+                    <th>Receiver NGO</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for t in past_tasks %}
+
+                <tr>
+                    <td>{{ t.id }}</td>
+                    <td>{{ t.volunteer_name }}</td>
+                    <td>{{ t.food }}</td>
+                    <td>{{ t.quantity }}</td>
+                    <td>{{ t.meals }}</td>
+                    <td>{{ t.donor_name }}</td>
+                    <td>{{ t.ngo_name }}</td>
+                    <td>
+                        <span class="badge normal">
+                            Completed
+                        </span>
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+        {% else %}
+
+        <div style="text-align:center;padding:40px;color:gray;">
+            <h3>No Past Deliveries</h3>
+        </div>
+
+        {% endif %}
+
+    </section>
+
+    <a href="/" class="back-btn" data-aos="fade-up">Back to Home</a>
+
+    <footer>
+        © 2026 Zero Food Waste System
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+    <script>
+
+        AOS.init({ duration: 1000, once: true });
+
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 60 },
+                color: { value: "#2ecc71" },
+                shape: { type: "circle" },
+                opacity: { value: 0.3 },
+                size: { value: 4 },
+                line_linked: { enable: true, color: "#2ecc71", opacity: 0.2 },
+                move: { enable: true, speed: 2 }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

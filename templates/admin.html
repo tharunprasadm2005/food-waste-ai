@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard </title>
+
+    <link rel="icon" href="static/images/recycle.png" type="image/png">
+
+    <!-- AOS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Particles -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1f4037, black);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        /* HEADER */
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text h1 {
+            font-size: 23px;
+            /* reduced from 24px */
+        }
+
+        .logo-text span {
+            font-size: 11px;
+            /* reduced from 12px */
+        }
+
+        nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            position: relative;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background: #2ecc71;
+            left: 0;
+            bottom: -5px;
+            transition: 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Highlight current page */
+        nav a.active::after {
+            width: 100%;
+        }
+
+
+        /* HERO */
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px 60px;
+            position: relative;
+        }
+
+        #particles-js {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            max-width: 800px;
+            margin: 20px auto;
+            color: #e0f2f1;
+            position: relative;
+            z-index: 1;
+        }
+
+
+        /* SECTIONS */
+
+        .section {
+            padding: 70px 60px;
+        }
+
+        .section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2ecc71;
+            font-size: 34px;
+        }
+
+
+        /* CARDS */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .card h3 {
+            color: #2ecc71;
+            margin-bottom: 10px;
+        }
+
+        .card h1 {
+            font-size: 32px;
+        }
+
+
+        /* TABLE */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        th {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            color: white;
+        }
+
+
+        /* LIST */
+
+        ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        ul li {
+            padding: 6px 0;
+        }
+
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #b0bec5;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .system-overview h2 {
+            text-align: center;
+            font-size: 36px;
+            color: #2ecc71;
+            margin-bottom: 40px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .card h1 {
+            font-size: 28px;
+            color: #2ecc71;
+            font-weight: 700;
+        }
+
+        /* Optional: Highlight high/low values (for Delay % and Avg Response) */
+        .card h1:contains('%') {
+            color: #f39c12;
+            /* orange for percentage metrics */
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+        <div class="logo">
+            <!-- SVG LOGO -->
+            <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="256" cy="256" r="200" stroke="#2ecc71" stroke-width="40" />
+                <path d="M256 56v100l80 80" stroke="#2ecc71" stroke-width="40" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            <div class="logo-text">
+                <h1>Zero Food Waste</h1>
+                <span> Eco Friendly Platform</span>
+            </div>
+        </div>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/predict">Predict Wastage</a>
+            <a href="/donor">Donate Food</a>
+            <a href="/receiver">Receive</a>
+            <a href="/volunteer_dashboard">Volunteer</a>
+            <a href="/admin" class="active">Admin</a>
+
+        </nav>
+    </header>
+
+    <div style="text-align:right;padding:15px;">
+        <b>Welcome, {{ admin }}</b> |
+        <a href="/admin/logout" style="color: #2ecc71;text-decoration:none;">
+            Logout
+        </a>
+    </div>
+
+    <!-- HERO -->
+
+    <section class="hero" data-aos="fade-up">
+
+        <div id="particles-js"></div>
+
+        <h1>Admin Analytics Dashboard</h1>
+
+        <p>
+            Monitor donations, food flow, AI performance, and system health
+            in real time.
+        </p>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+    <section class="section system-overview" data-aos="fade-up">
+        <h2>📊 System Overview</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="card-icon">🎁</div>
+                <h3>Total Donations</h3>
+                <h1>{{data.total_donations}}</h1>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🥗</div>
+                <h3>Total Food (Kg)</h3>
+                <h1>{{data.total_food}}</h1>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">✅</div>
+                <h3>Successful</h3>
+                <h1>{{data.successful}}</h1>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">⏳</div>
+                <h3>Past Donations</h3>
+                <h1>{{data.pending}}</h1>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📈</div>
+                <h3>Success Rate</h3>
+                <h1>{{data.success_rate}}%</h1>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">⚠️</div>
+                <h3>Delay %</h3>
+                <h1>{{data.delay_percent}}%</h1>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">⏱️</div>
+                <h3>Avg Response</h3>
+                <h1>{{data.avg_response}}h</h1>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🌱</div>
+                <h3>CO₂ Saved</h3>
+                <h1>{{data.co2_saved}} Kg</h1>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">💧</div>
+                <h3>Water Saved</h3>
+                <h1>{{data.water_saved}} L</h1>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CHARTS -->
+
+    <section class="section" data-aos="fade-up">
+
+        <h2>📈 Donation Trends</h2>
+
+        <canvas id="hourlyChart"></canvas>
+
+        <br><br>
+
+        <canvas id="monthlyChart"></canvas>
+
+    </section>
+
+
+    <!-- RANKINGS -->
+
+    <section class="section" data-aos="fade-up">
+
+        <h2>🏆 Rankings</h2>
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>Top Donors</h3>
+
+                <ul>
+                    {% for k,v in data.top_donors.items() %}
+                    <li>{{k}} - {{v}} Kg</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Top Receivers</h3>
+
+                <ul>
+                    {% for k,v in data.top_receivers.items() %}
+                    <li>{{loop.index}}. {{k}} - {{v}} Kg</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOD + FORECAST -->
+
+    <section class="section" data-aos="fade-up">
+
+        <h2>🍽 Waste & Forecast</h2>
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>Most Wasted Food</h3>
+
+                <ul>
+                    {% for k,v in data.food_stats.items() %}
+                    <li>{{k}} - {{v}} Kg</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Next Week Forecast</h3>
+
+                <h1>{{data.forecast}} Kg</h1>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SYSTEM + AI -->
+
+    <section class="section" data-aos="fade-up">
+
+        <h2>🖥 System & AI Status</h2>
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>System Health</h3>
+
+                <ul>
+                    {% for k,v in data.system_status.items() %}
+                    <li>{{k}} : {{v}}</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>AI Insights</h3>
+
+                <ul>
+                    {% for i in data.insights %}
+                    <li>{{i}}</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ML -->
+
+    <section class="section" data-aos="fade-up">
+
+        <h2>🤖 ML Performance</h2>
+
+        <table>
+
+            <tr>
+                <th>Model</th>
+                <th>MAE</th>
+                <th>RMSE</th>
+                <th>R² Score</th>
+            </tr>
+            <tr>
+                <td>CatBoost</td>
+                <td>{{data.ml_metrics.cb_mae}}</td>
+                <td>{{data.ml_metrics.cb_rmse}}</td>
+                <td>{{data.ml_metrics.cb_r2}}</td>
+            </tr>
+            <tr>
+                <td>XGBoost</td>
+                <td>{{data.ml_metrics.xg_mae}}</td>
+                <td>{{data.ml_metrics.xg_rmse}}</td>
+                <td>{{data.ml_metrics.xg_r2}}</td>
+            </tr>
+            <tr>
+                <td>Random Forest</td>
+                <td>{{data.ml_metrics.rf_mae}}</td>
+                <td>{{data.ml_metrics.rf_rmse}}</td>
+                <td>{{data.ml_metrics.rf_r2}}</td>
+            </tr>
+            <tr>
+                <td>LightGBM</td>
+                <td>{{data.ml_metrics.lgb_mae}}</td>
+                <td>{{data.ml_metrics.lgb_rmse}}</td>
+                <td>{{data.ml_metrics.lgb_r2}}</td>
+            </tr>
+        </table>
+
+    </section>
+
+    <footer>
+        © 2026 Zero Food Waste
+    </footer>
+
+
+    <!-- SCRIPTS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+    <script>
+
+        AOS.init({ duration: 1000, once: true });
+
+        // Pull data from backend
+        const hourly = {{ data.hourly | tojson }};
+        const monthly = {{ data.monthly | tojson }};
+
+        // Highlight lunch/dinner in a different color
+        const hourlyColors = Object.keys(hourly).map(h =>
+            (h >= 11 && h <= 14) || (h >= 18 && h <= 21) ? '#FF9800' : '#4CAF50'
+        );
+
+        // ================= HOURLY CHART =================
+        new Chart(document.getElementById("hourlyChart"), {
+            type: "bar",
+            data: {
+                labels: Object.keys(hourly),
+                datasets: [{
+                    label: "Hourly Wastage",
+                    data: Object.values(hourly),
+                    backgroundColor: hourlyColors,
+                    borderColor: "#388E3C",
+                    borderWidth: 1,
+                    hoverBackgroundColor: "#66BB6A",
+                    hoverBorderColor: "#2E7D32",
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true, position: "top" },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: ctx => `${ctx.dataset.label}: ${ctx.raw} events`
+                        }
+                    }
+                },
+                scales: {
+                    x: { title: { display: true, text: "Hour of Day" } },
+                    y: { title: { display: true, text: "Number of Events" }, beginAtZero: true }
+                }
+            }
+        });
+
+        // ================= MONTHLY CHART =================
+        new Chart(document.getElementById("monthlyChart"), {
+            type: "line",
+            data: {
+                labels: Object.keys(monthly),
+                datasets: [{
+                    label: "Monthly Wastage",
+                    data: Object.values(monthly),
+                    backgroundColor: "rgba(33, 150, 243, 0.2)",
+                    borderColor: "#2196F3",
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true,
+                    pointBackgroundColor: "#0D47A1",
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true, position: "top" },
+                    tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} events` } }
+                },
+                scales: {
+                    x: { title: { display: true, text: "Month" } },
+                    y: { title: { display: true, text: "Number of Events" }, beginAtZero: true }
+                }
+            }
+        });
+
+
+        // Particles
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 50 },
+                color: { value: "#2ecc71" },
+                size: { value: 3 },
+                move: { speed: 2 }
+            }
+        });
+
+
+    </script>
+
+</body>
+
+</html>

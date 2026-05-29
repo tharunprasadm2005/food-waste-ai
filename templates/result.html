@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Food Wastage Prediction</title>
+    <link rel="icon" href="static/images/recycle.png" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- ===== STYLES ===== -->
+    <style>
+        /* Global Reset & Font */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            padding: 25px 60px;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(8px);
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        header:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(0, 210, 255, 0.35);
+        }
+
+        header h1 {
+            color: #2ecc71;
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            color: #cfd8dc;
+            font-size: 14px;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1f4037, black);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+            scroll-behavior: smooth;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 95%;
+            margin: auto;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            margin-bottom: 15px;
+            color: #2ecc71;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: rgba(0, 0, 0, 0.35);
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            backdrop-filter: none;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease,
+                box-shadow 0.3s ease,
+                background 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.01);
+            background: rgba(0, 0, 0, 0.55);
+        }
+
+        /* ===== KPI ===== */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .kpi {
+            text-align: center;
+            padding: 15px;
+        }
+
+        .kpi h2 {
+            font-size: 30px;
+            color: #ff7a18;
+        }
+
+        .kpi span {
+            font-size: 14px;
+            color: #cfd8dc;
+        }
+
+        /* ===== GRID ===== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        th {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            color: white;
+        }
+
+        .high {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .medium {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .low {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        /* ===== BUTTONS ===== */
+        .actions {
+            text-align: center;
+        }
+
+        a.button {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 30px;
+            margin: 8px;
+            font-weight: bold;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        a.button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+        }
+
+        canvas {
+            max-height: 300px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:900px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Zero Food Waste – Prediction Results</h1>
+        <p>AI-Powered Food Wastage Prediction & Donation Intelligence</p>
+    </header>
+
+    <div class="container">
+
+        <!-- ===== TITLE ===== -->
+        <div class="card">
+            <h2>🍽 Food Wastage Prediction Dashboard</h2>
+            <p>Final selected model: <b>CatBoost</b></p>
+            <h3>
+                Final Predicted Wastage:
+                <span style="color:#ff7a18">{{ cb_pred }} Kg</span>
+            </h3>
+        </div>
+
+        <!-- ===== KPI ===== -->
+        <div class="card">
+            <div class="kpi-row">
+                <div class="kpi">
+                    <h2>{{ cb_pred }}</h2>
+                    <span>Predicted Wastage (Kg)</span>
+                </div>
+                <div class="kpi">
+                    <h2>₹{{ cost_loss }}</h2>
+                    <span>Financial Loss</span>
+                </div>
+                <div class="kpi">
+                    <h2>{{ co2_impact }} kg</h2>
+                    <span>CO₂ Impact</span>
+                </div>
+                <div class="kpi">
+                    <h2>{{ model_confidence }}%</h2>
+                    <span>Model Confidence</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== MODEL & SCENARIO ===== -->
+        <div class="grid-2">
+            <div class="card">
+                <h3>📊 Model Predictions</h3>
+                <canvas id="modelChart"></canvas>
+            </div>
+
+            <div class="card">
+                <h3>📈 Wastage Scenarios</h3>
+                <canvas id="scenarioChart"></canvas>
+            </div>
+        </div>
+
+        <!-- ===== METRICS ===== -->
+        <div class="card">
+            <h3>📉 Model Performance Comparison</h3>
+            <canvas id="metricsChart"></canvas>
+        </div>
+
+        <!-- ===== TABLE ===== -->
+        <div class="card">
+            <h3>📋 Model Metrics (Exact Values)</h3>
+            <table>
+                <tr>
+                    <th>Model</th>
+                    <th>MAE</th>
+                    <th>RMSE</th>
+                    <th>R²</th>
+                </tr>
+                <tr>
+                    <td>CatBoost (Proposed)</td>
+                    <td>{{ cb_mae }}</td>
+                    <td>{{ cb_rmse }}</td>
+                    <td>{{ cb_r2 }}</td>
+                </tr>
+                <tr>
+                    <td>XGBoost</td>
+                    <td>{{ xg_mae }}</td>
+                    <td>{{ xg_rmse }}</td>
+                    <td>{{ xg_r2 }}</td>
+                </tr>
+                <tr>
+                    <td>Random Forest</td>
+                    <td>{{ rf_mae }}</td>
+                    <td>{{ rf_rmse }}</td>
+                    <td>{{ rf_r2 }}</td>
+                </tr>
+                <tr>
+                    <td>LightGBM</td>
+                    <td>{{ lgb_mae }}</td>
+                    <td>{{ lgb_rmse }}</td>
+                    <td>{{ lgb_r2 }}</td>
+                </tr>
+            </table>
+        </div>
+
+
+        <!-- ===== INSIGHTS ===== -->
+        <div class="card">
+            <h3>🧠 Smart Insights</h3>
+            <p>⚠ Risk Level: <span class="{{ risk_level|lower }}">{{ risk_level }}</span></p>
+            <p>📊 Major Factor: <b>{{ top_feature }}, Monitor this factor to reduce food wastage.</b></p>
+            <p>💡 Recommendation: {{ prep_recommendation }}</p>
+            <p>🤝 Donation Status: <b>{{ donation_urgency }}</b></p>
+        </div>
+
+        <!-- ===== ADVANCED PREDICTION INSIGHTS ===== -->
+        <div class="card">
+            <h3>📌 Advanced Prediction Insights</h3>
+            <p>📊 <b>Model Agreement Score:</b> {{ agreement_score }}%</p>
+            <p>📈 <b>Prediction Confidence Range:</b> {{ lower_bound }} Kg – {{ upper_bound }} Kg</p>
+            <p>⚙ <b>Overproduction Index:</b> {{ overproduction_index }}%</p>
+            <p>📢 <b>Tomorrow Demand Trend:</b> {{ demand_surge }}</p>
+        </div>
+
+        <!-- ===== NEW KPI VISUALIZATION ===== -->
+        <div class="grid-2">
+            <div class="card">
+                <h3>📊 Model Agreement Visualization</h3>
+                <canvas id="agreementChart"></canvas>
+            </div>
+
+            <div class="card">
+                <h3>♻️ Waste Reduction Simulation</h3>
+                <canvas id="reductionChart"></canvas>
+            </div>
+
+            <!-- ===== FEATURE IMPORTANCE ===== -->
+            <div class="card">
+                <h3>🔍 Feature Importance</h3>
+                <img src="{{ url_for('static', filename='feature_importance.png') }}" width="100%"
+                    style="border-radius:14px;">
+            </div>
+
+            <!-- ===== FOOD WASTE ===== -->
+            <div class="card">
+                <h3>🍖 High Wastage Food Items</h3>
+                <canvas id="foodWasteChart"></canvas>
+            </div>
+        </div>
+
+        <!-- ===== Seasonality vs Type of Food Waste ===== -->
+        <div class="card">
+            <h3>📖 Seasonality vs Type of Food Waste</h3>
+            <canvas id="seasonChart"></canvas>
+        </div>
+
+        <!-- ===== ACTIONS ===== -->
+        <div class="card actions">
+            <p><b>If excess food exists, please donate.</b></p>
+            <a class="button" href="/donor">Donate Food</a>
+            <a class="button" href="/predict">Predict Again</a>
+            <a class="button" href="/">Home</a>
+        </div>
+
+    </div>
+
+    <!-- ================== CHART JS ================== -->
+    <script>
+        const ORANGE = '#ff6f31';
+        const BLUE = '#00d2ff';
+
+        new Chart(document.getElementById('modelChart'), {
+            type: 'bar',
+            data: {
+                labels: [
+                    'CatBoost (Proposed)',
+                    'XGBoost',
+                    'Random Forest',
+                    'LightGBM'
+                    
+                ],
+                datasets: [{
+                    label: 'Predicted Wastage (Kg)',
+                    data: [
+                        {{ cb_pred }},
+                {{ xg_pred }},
+                {{ rf_pred }},
+              {{ lgb_pred }},  
+            ],
+            backgroundColor: [
+            BLUE,
+            ORANGE,
+            BLUE,
+            ORANGE
+        ],
+            categoryPercentage: 0.5
+        }]
+    }
+    
+});
+
+
+        new Chart(document.getElementById('scenarioChart'), {
+            type: 'line',
+            data: {
+                labels: ['Normal Day', 'Festival Day', 'Tomorrow'],
+                datasets: [{
+                    label: 'Estimated Wastage (Kg)',
+                    data: [{{ normal_pred }}, {{ festival_pred }},{{ tomorrow_pred }}],
+            borderColor: ORANGE,
+            backgroundColor: 'rgba(255,111,49,0.2)',
+            fill: true,
+            tension: 0.35,
+            pointRadius: 6,
+            pointBackgroundColor: ORANGE
+        }]
+    },
+            options: {
+            responsive: true,
+            plugins: { legend: { display: false }, title: { display: true, text: 'Wastage Scenario Comparison' } },
+            scales: { y: { beginAtZero: false } }
+        }
+});
+
+        new Chart(document.getElementById('metricsChart'), {
+            type: 'bar',
+            data: {
+                labels: ['CatBoost', 'XGBoost', 'Random Forest', 'LightGBM'],
+                datasets: [
+                    { label: 'MAE', data: [ {{ cb_mae }},{{ xg_mae }},{{ rf_mae }}, {{ lgb_mae }}] , backgroundColor: ORANGE  },
+            { label: 'RMSE', data: [{{ cb_rmse }}, {{ xg_rmse }},{{ rf_rmse }}, {{ lgb_rmse }}] , backgroundColor: BLUE },
+            { label: 'R² Score', data: [{{ cb_r2 }}, {{ xg_r2 }}, {{ rf_r2 }}, {{ lgb_r2 }}], backgroundColor: ORANGE   }
+        ]
+    }
+});
+
+        new Chart(document.getElementById('foodWasteChart'), {
+            type: 'bar',
+            data: {
+                labels: {{ food_labels| tojson }},
+            datasets: [{
+                label: 'Wastage Level (%)',
+                data: {{ food_values| tojson }},
+            backgroundColor: BLUE
+   }]
+ }
+});
+
+        const seasonLabels = {{ season_labels | tojson }};
+        const seasonData = {{ season_chart_data | tojson }};
+
+        const seasonDatasets = [];
+
+        const colors = ['#ff6f31', '#00d2ff', '#2ecc71', '#f39c12', '#9b59b6'];
+
+        let i = 0;
+
+        for (const food in seasonData) {
+            seasonDatasets.push({
+                label: food,
+                data: seasonData[food],
+                borderColor: colors[i % colors.length],
+                backgroundColor: colors[i % colors.length] + '55',
+                fill: true,
+                tension: 0.4
+            });
+
+            i++;
+        }
+
+        new Chart(document.getElementById('seasonChart'), {
+            type: 'line',
+            data: {
+                labels: seasonLabels,
+                datasets: seasonDatasets
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Seasonality vs Type of Food Waste'
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('agreementChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Agreement', 'Variance'],
+                datasets: [{ data: [{{ agreement_score }}, 100 - {{ agreement_score }}], backgroundColor: [ORANGE, BLUE]
+        }]
+    },
+            options: { plugins: { legend: { position: 'bottom' } } }
+});
+
+        new Chart(document.getElementById('reductionChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Current Waste', 'Optimized Waste', 'Waste Saved'],
+                datasets: [{ label: 'Wastage (Kg)', data: [{{ cb_pred }}, {{ reduced_waste }}, {{ waste_saved }}], backgroundColor: [ORANGE, BLUE, ORANGE], categoryPercentage: 0.5
+        }]
+    },
+            options: { plugins: { legend: { display: false } } }
+});
+    </script>
+
+</body>
+
+</html>
